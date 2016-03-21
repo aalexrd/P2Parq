@@ -252,6 +252,15 @@ int Parqueo::readInt()
 {
 	string i;
 	getline(cin, i);
+	k:
+	for (int k = 0; k < strlen(i.c_str()); k++) {
+		if (isdigit(i[k]) == false)
+		{
+			cout << "Digite lo que se le solicit\242, intente de nuevo\n";
+			getline(cin, i);
+			goto k;
+		}
+	}
 	return atoi(i.c_str());
 }
 
