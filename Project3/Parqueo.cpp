@@ -188,7 +188,7 @@ void Parqueo::respalda()
 			respaldo << lote[k].getHoraDif().tm_mday << "\n";
 			respaldo << lote[k].getHoraDif().tm_mon << "\n";
 			respaldo << lote[k].getHoraDif().tm_year;
-			if (lote[k+1].getOcupado() == true)
+			if (lote[k + 1].getOcupado() == true)
 			{
 				respaldo << endl;
 			}
@@ -251,13 +251,13 @@ string Parqueo::readString()
 int Parqueo::readInt()
 {
 	string i;
+k:
 	getline(cin, i);
-	k:
-	for (int k = 0; k < strlen(i.c_str()); k++) {
+	for (int k = 0; k < strlen(i.c_str()); k++)
+	{
 		if (isdigit(i[k]) == false)
 		{
 			cout << "Digite lo que se le solicit\242, intente de nuevo\n";
-			getline(cin, i);
 			goto k;
 		}
 	}
