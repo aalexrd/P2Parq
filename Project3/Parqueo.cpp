@@ -95,7 +95,7 @@ double Parqueo::pago(tm tiempo)
 void Parqueo::fechaManual(int k)
 {
 	cout << "\nDigite el a\244o de entrada:\n";
-	lote[k].getHoraDif().tm_year = readInt();
+	lote[k].getHoraDif().tm_year = readInt()-1900;
 	cout << "\nDigite el mes de entrada(1 a 12):\n";
 	lote[k].getHoraDif().tm_mon = readInt() - 1;//0 a 11
 	cout << "\nDigite el d\241a de entrada:\n";
