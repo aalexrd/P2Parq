@@ -47,6 +47,12 @@ void Parqueo::autoEntra()
 	lote[k].getDueno().setCedula(readString());
 	cout << "Digite el numero de placa del auto:\n";
 	lote[k].setPlaca(readString());
+	if (buscarAuto(lote[k].getPlaca()) != 25)
+	{
+		cout << "El auto ya se encuentra en el parqueo\n";
+		system("pause");
+		return;
+	}
 	cout << "Digite la fecha de entrada (si desea hacerlo automatico pulse 1 si no pulse cualquier otro n\243mero):\n";
 	if (readInt() == 1)
 		lote[k].setFecha(fecha(k));
@@ -101,7 +107,7 @@ void Parqueo::fechaManual(int k)
 	cout << "\nDigite el d\241a de entrada:\n";
 	lote[k].getHoraDif().tm_mday = readInt();
 	char buf[80];
-	strftime(buf, sizeof(buf), "%F", &lote[k].getHoraDif());
+	strftime(buf, sizeof(buf), "%Y-%m-%d", &lote[k].getHoraDif());
 	lote[k].setFecha(buf);
 }
 
@@ -113,7 +119,7 @@ void Parqueo::horaManual(int k)
 	lote[k].getHoraDif().tm_min = readInt();
 	lote[k].getHoraDif().tm_sec = 0;
 	char buf[80];
-	strftime(buf, sizeof(buf), "%r", &lote[k].getHoraDif());
+	strftime(buf, sizeof(buf), "%I:%M %p", &lote[k].getHoraDif());
 	lote[k].setHora(buf);
 }
 
@@ -127,6 +133,11 @@ void Parqueo::restaura()
 	restaura.open(nombre);
 	if (restaura.is_open())
 	{
+		if (restaura.peek() == ifstream::traits_type::eof())
+		{
+			// Empty File
+			return;
+		}
 		while (!restaura.eof() && k < 25)
 		{
 			getline(restaura, line);//placa
@@ -146,17 +157,17 @@ void Parqueo::restaura()
 			getline(restaura, line);//Ocupado
 			lote[k].setOcupado(atoi(line.c_str()));
 			getline(restaura, line);//Hora
-			lote[k].getHoraDif().tm_hour = stoi(line);
+			lote[k].getHoraDif().tm_hour = atoi(line.c_str());
 			getline(restaura, line);//min
-			lote[k].getHoraDif().tm_min = stoi(line);
+			lote[k].getHoraDif().tm_min = atoi(line.c_str());
 			getline(restaura, line);//sec
-			lote[k].getHoraDif().tm_sec = stoi(line);
+			lote[k].getHoraDif().tm_sec = atoi(line.c_str());
 			getline(restaura, line);//dia
-			lote[k].getHoraDif().tm_mday = stoi(line);
+			lote[k].getHoraDif().tm_mday = atoi(line.c_str());
 			getline(restaura, line);//mes
-			lote[k].getHoraDif().tm_mon = stoi(line);
+			lote[k].getHoraDif().tm_mon = atoi(line.c_str());
 			getline(restaura, line);//año
-			lote[k].getHoraDif().tm_year = stoi(line);
+			lote[k].getHoraDif().tm_year = atoi(line.c_str());
 			k++;
 		}
 	}
@@ -217,14 +228,14 @@ string Parqueo::fecha(int k)
 	char buf[80];
 	localtime_s(&tstruct, &now);
 	lote[k].setHoraDif(tstruct);
-	strftime(buf, sizeof(buf), "%F", &tstruct);
+	strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
 	return buf;
 }
 
 string Parqueo::hora(int k)//automatico, como se llama primero a fecha esta ya crea la estructura con la hora
 {
 	char buf[80];
-	strftime(buf, sizeof(buf), "%r", &lote[k].getHoraDif());
+	strftime(buf, sizeof(buf), "%I:%M %p", &lote[k].getHoraDif());
 	return buf;
 }
 
